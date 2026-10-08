@@ -1,15 +1,131 @@
-# Ekiti-Life
-Ekiti Life is a free browser life-sim set in Ekiti State, Nigeria. Create your character, get a random birth-lottery background, and build a life across all 16 LGAs, from Ado-Ekiti to Omuo.
-
-What you can do
-
-Travel by trek, bus or okada between towns, campuses and landmarks
-Visit Ikogosi Warm Springs, Arinta Waterfall, Olosunta Hill and Ewi's Palace
-Study at EKSU, FUOYE, ABUAD, BOUESTI and other Ekiti schools
-Choose from 10 careers, pay weekly rent, save with ajo and upgrade your home
-Open a provision stall, pitch at the innovation hub, or run for Ward Chairman
-Hang out at gaming centres, hotels and clubs, and survive NEPA outages
-Complete daily tasks, hunt the daily gem and unlock achievements
-Register a username and chat with Ekiti residents on your in-game phone
-
-Free to play. No download or sign-up. Your progress saves in your browser.
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Ekiti Life — live your Ekiti story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef3ea;--cd:#fff;--ink:#10281f;--mu:#56705f;--ac:#2f3f9e;--ac2:#b87500;--bad:#c8402a;--ok:#2a8a4a;--ln:#d5e0cf;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e2620;--cd:#17362d;--ink:#f2efe4;--mu:#9db5a8;--ac:#f0b23a;--ac2:#7d90ff;--bad:#ff7a59;--ok:#6fd08c;--ln:#27483d}}
+:root[data-theme="dark"]{--bg:#0e2620;--cd:#17362d;--ink:#f2efe4;--mu:#9db5a8;--ac:#f0b23a;--ac2:#7d90ff;--bad:#ff7a59;--ok:#6fd08c;--ln:#27483d}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.45 Figtree,system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque',Georgia,serif;margin:0;line-height:1.1}
+#app{max-width:520px;margin:0 auto;padding:12px 14px 40px}
+.card{background:var(--cd);border:1px solid var(--ln);border-radius:16px;padding:14px;margin:10px 0}
+.top{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:8px 0;z-index:2}
+.row{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.bar{flex:1;height:8px;background:var(--ln);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ac)}
+.bars{display:grid;grid-template-columns:auto 1fr;gap:4px 8px;font-size:13px;margin-top:6px}
+button{font:600 15px Figtree,sans-serif;border:1px solid var(--ln);background:var(--cd);color:var(--ink);padding:10px 12px;border-radius:12px;text-align:left;cursor:pointer;width:100%;margin:4px 0}
+button.p{background:var(--ac);color:var(--bg);border-color:var(--ac)}button:disabled{opacity:.4}
+button:focus-visible,input:focus-visible{outline:3px solid var(--ac2);outline-offset:2px}
+.tabs{display:flex;gap:6px}.tabs button{text-align:center;margin:0}.tabs .on{background:var(--ac);color:var(--bg)}
+.sm{font-size:13px;color:var(--mu)}.msg{background:var(--ac);color:var(--bg);padding:8px 12px;border-radius:12px;margin:8px 0;font-weight:600}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:6px}.g2 button{margin:0}
+input{width:100%;font:inherit;padding:10px;border-radius:12px;border:1px solid var(--ln);background:var(--cd);color:var(--ink)}
+.av{font-size:30px;text-align:center}.av.on{background:var(--ac)}
+.big{font-size:42px;line-height:1}
+</style></head><body><div id="app"></div>
+<script>
+const P=[
+{n:'Ado-Ekiti',g:'Ado-Ekiti',x:0,y:0,e:'🏛️',p:'Mama Tope',b:'The state capital. Oja Oba market, EKSU and Fajuyi Park.',f:['Iyan & egusi',1500],a:[['Hustle at Oja Oba',4,3500,-25,-15,-3,0],['Attend lecture at EKSU',3,-500,-15,-10,0,0,1],['Chill at Fajuyi Park',2,-500,-5,-5,15,0]]},
+{n:'Aramoko-Ekiti',g:'Ekiti West',x:-12,y:2,e:'⛰️',p:'Baba Segun',b:'Hill country west of Ado.',f:['Pounded yam & ewedu',1200],a:[['Hike the Aramoko hills',3,0,-25,-10,20,1],['Farm work',5,3000,-35,-20,-5,0]]},
+{n:'Ikogosi Warm Springs',g:'Ekiti West',x:-24,y:-4,e:'♨️',p:'Ayo the guide',b:'Where warm and cold water meet in one stream.',f:['Boli & groundnut',600],a:[['Dip where warm meets cold',2,-1500,10,-5,35,2],['Guide tourists',5,5000,-30,-15,5,1]]},
+{n:'Ikere-Ekiti',g:'Ikere',x:10,y:-22,e:'🗻',p:'Iya Bimpe',b:'Home of Olosunta Hill and the cocoa trade.',f:['Amala & gbegiri',1300],a:[['Climb Olosunta Hill',4,0,-35,-15,30,2],['Trade cocoa',5,4500,-30,-15,-3,0]]},
+{n:'Ilawe-Ekiti',g:'Ekiti South-West',x:-8,y:-30,e:'🌴',p:'Tunde',b:'Quiet southern town of farms and palm trees.',f:['Eba & okra',1000],a:[['Palm-wine run',4,3000,-25,-10,5,0],['Help at the farm',5,3200,-32,-15,-2,0]]},
+{n:'Emure-Ekiti',g:'Emure',x:20,y:-30,e:'🍫',p:'Sister Kemi',b:'Cocoa farms and rolling green.',f:['Yam porridge',1000],a:[['Cocoa farm shift',5,3500,-30,-15,-2,0],['Sit with the elders',2,0,-5,-5,10,1]]},
+{n:'Ise-Ekiti',g:'Ise/Orun',x:-5,y:-45,e:'🌳',p:'Mama Ise',b:'Southern forest edge and Orun market.',f:['Moi-moi & pap',500],a:[['Firewood trade',4,2800,-30,-10,0,0],['Stroll the market',2,-800,-8,-5,12,0]]},
+{n:'Ido-Ekiti',g:'Ido-Osi',x:-8,y:28,e:'🛵',p:'Mr Femi',b:'Northern gateway with busy junctions.',f:['Akara & ogi',500],a:[['Okada riding gig',5,4000,-30,-15,-2,0],['Visit Ifaki junction',2,0,-5,0,8,1]]},
+{n:'Ijero-Ekiti',g:'Ijero',x:10,y:35,e:'🌿',p:'Dele',b:'Hilltop town with a proud school tradition.',f:['Iyan & efo riro',1400],a:[['Teach an SS1 class',5,4500,-25,-10,0,1,1],['Trek to the market',2,-300,-15,-5,5,0]]},
+{n:'Arinta Waterfall',g:'Ijero',x:14,y:42,e:'💦',p:'Guide Bisi',b:'Ipole-Iloro cascade tucked in the forest.',f:['Roasted corn & ube',500],a:[['Swim at Arinta Falls',3,-1000,-20,-10,35,2],['Photograph for tourists',4,3500,-20,-10,10,1]]},
+{n:'Efon-Alaaye',g:'Efon',x:-28,y:38,e:'🥁',p:'Chief Adewale',b:'Mountain town of craft and culture.',f:['Pounded yam & ogbono',1500],a:[['Join dance practice',3,0,-20,-10,25,2],['Sell crafts',4,3200,-20,-10,0,0]]},
+{n:'Ikole-Ekiti',g:'Ikole',x:38,y:34,e:'🌾',p:'Auntie Folake',b:'Big yam country in the north-east.',f:['Amala & ewedu',1100],a:[['Harvest yam',5,3800,-35,-20,0,0],['Football at the pitch',2,0,-25,-10,25,1]]},
+{n:'Oye-Ekiti',g:'Oye',x:20,y:42,e:'🎓',p:'Seun (FUOYE student)',b:'University town: lectures, tutors and late nights.',f:['Jollof & plantain',1200],a:[['Study at FUOYE',4,-800,-20,-10,0,0,2],['Tutor undergrads',4,4500,-20,-10,0,0]]},
+{n:'Igede-Ekiti',g:'Irepodun/Ifelodun',x:22,y:15,e:'🎶',p:'Mama Rakiya',b:'Music, weddings and weekend owambe.',f:['Ewa & dodo',700],a:[['Spray money at owambe',3,-3000,-10,10,35,3],['Cater at owambe',4,5000,-25,-10,5,1]]},
+{n:'Ode-Ekiti',g:'Gbonyin',x:45,y:14,e:'🥜',p:'Brother Kunle',b:'Kolanut and market trade, east of Ado.',f:['Eba & okra',1000],a:[['Buy kolanut in bulk',4,4200,-25,-10,-2,0],['Attend town meeting',2,0,-5,-5,8,2]]},
+{n:'Omuo-Ekiti',g:'Ekiti East',x:62,y:-8,e:'🏔️',p:'Hajia Sade',b:'Far east, close to the Kogi border.',f:['Rice & stew',1000],a:[['Trade at the border market',5,4800,-30,-15,-3,0],['Scenic hill walk',3,0,-25,-10,25,1]]},
+{n:'Otun-Ekiti',g:'Moba',x:50,y:38,e:'🌅',p:'Elder Ojo',b:'Calm farming town in the north-east.',f:['Pounded yam & egusi',1300],a:[['Farm help',5,3400,-30,-15,0,0],['Palm-wine evening',2,-700,-5,0,20,0]]},
+{n:'Iye-Ekiti',g:'Ilejemeje',x:55,y:48,e:'🧵',p:'Madam Joke',b:'Weavers and market women of the far north-east.',f:['Ofada rice',1300],a:[['Weave aso-oke',5,4200,-25,-10,2,1],['Market stroll',2,-300,-10,-5,10,0]]},
+{n:'EKSU Library',t:'sch',g:'Ado-Ekiti',x:2,y:3,e:'📚',p:'Dr. Ojo',b:'Quiet reading floors at Ekiti State University.',f:['Jollof & plantain', 1000],a:[['Read in the library',4,0,-15,-10,0,0,2],['Join a study group',3,0,-10,-5,12,1,1]]},
+{n:'EKSU Sports Complex',t:'sch',g:'Ado-Ekiti',x:2.5,y:3.5,e:'⚽',p:'Coach Tayo',b:'Pitches and tracks for EKSU students.',f:['Akara & pap', 500],a:[['Play football',2,0,-25,-10,25,1],['Join athletics trials',3,0,-30,-10,15,2]]},
+{n:'EKSU Student Union',t:'sch',g:'Ado-Ekiti',x:1.5,y:3,e:'🎓',p:'Prez Kemi',b:'Campus politics, snacks and gist.',f:['Suya & bread', 800],a:[['Campaign for SUG',3,0,-15,-5,10,2],['Sell snacks to students',4,3000,-20,-10,0,0]]},
+{n:'ABUAD',t:'sch',g:'Ado-Ekiti',x:4,y:-1,e:'🏫',p:'Dean Ife',b:'Afe Babalola University, a private campus on the hill.',f:['Rice & stew', 1500],a:[['Attend a lecture',4,-1000,-15,-10,0,0,2],['Lab practical',3,0,-20,-10,0,1,2]]},
+{n:'Federal Polytechnic Ado',t:'sch',g:'Ado-Ekiti',x:-3,y:3,e:'🛠️',p:'Mr Ola',b:'Technical training and workshops.',f:['Eba & okra', 800],a:[['Learn a trade skill',4,-500,-20,-10,0,1,1],['Workshop job',4,3500,-25,-10,0,0]]},
+{n:"Christ's School Ado",t:'sch',g:'Ado-Ekiti',x:1,y:-3,e:'🏛️',p:'Principal Adebayo',b:"A famous old boys' secondary school.",f:['Moi-moi & pap', 600],a:[['Attend an old boys event',2,0,-5,-5,15,2],['Coach the debate club',3,1500,-10,-5,8,1]]},
+{n:'BOUESTI Ikere',t:'sch',g:'Ikere',x:11,y:-23,e:'🎒',p:'Prof. Dada',b:'Bamidele Olumilua University of Education, Science and Technology.',f:['Amala & ewedu', 900],a:[['Attend a lecture',4,-500,-15,-10,0,0,2],['Cocoa research project',4,2000,-20,-10,0,1,1]]},
+{n:'FUOYE Oye Campus',t:'sch',g:'Oye',x:21,y:43,e:'💻',p:'Seun',b:'Federal University Oye-Ekiti, the main campus.',f:['Jollof & plantain', 1000],a:[['Read in the library',4,0,-15,-10,0,0,2],['Join a hackathon',4,0,-20,-10,10,2,2]]},
+{n:'FUOYE Ikole Campus',t:'sch',g:'Ikole',x:39,y:35,e:'🎓',p:'Aunty Bose',b:'The second FUOYE campus, in Ikole.',f:['Ewa & dodo', 700],a:[['Attend a lecture',4,-500,-15,-10,0,0,2],['Sell lunch to students',4,3000,-20,-10,0,0]]},
+{n:"Ewi's Palace",t:'tour',g:'Ado-Ekiti',x:-1,y:1,e:'👑',p:'Palace aide',b:'Seat of the Ewi of Ado-Ekiti.',f:['Iyan & egusi', 1500],a:[['Tour the palace',2,-500,-8,-5,20,2],['Learn Ekiti history',2,0,-5,-5,8,2,1]]},
+{n:'Olosunta Hill',t:'tour',g:'Ikere',x:10.5,y:-22.5,e:'⛰️',p:'Guide Wale',b:'Rock hill that watches over Ikere.',f:['Roasted corn & ube', 500],a:[['Hike to the summit',4,0,-35,-15,35,3],['Sunrise photos',3,2500,-20,-10,15,1]]},
+{n:'Ikogosi Resort Chalets',t:'hotel',g:'Ekiti West',x:-24.5,y:-4,e:'🏨',p:'Receptionist Dayo',b:'Chalets next to the warm spring.',f:['Continental breakfast', 2500],a:[['Spa & warm bath',2,-3000,15,-5,35,1],['Resort receptionist shift',5,4500,-25,-10,0,0]]},
+{n:'Ado City Hotel',t:'hotel',g:'Ado-Ekiti',x:-2,y:-1,e:'🏨',p:'Manager Tola',b:'A comfortable hotel in the middle of Ado.',f:['Club sandwich', 2500],a:[['Hotel restaurant shift',5,4200,-25,-10,0,0],['Lounge by the pool',2,-2000,10,-5,22,0]]},
+{n:'Oye Scholars Lodge',t:'hotel',g:'Oye',x:20,y:41,e:'🛏️',p:'Madam Nkem',b:'A student-friendly lodge near FUOYE.',f:['Rice & chicken', 1800],a:[['Front desk shift',5,4000,-25,-10,0,0],['Rest in the lobby',1,-500,8,-3,10,0]]},
+{n:'FIFA Gaming Hub, Ado',t:'game',g:'Ado-Ekiti',x:-1,y:-2,e:'🎮',p:'Ayo Gamer',b:'Consoles, FIFA tournaments and loud trash talk.',f:['Shawarma', 1500],a:[['Play a FIFA tournament',3,-1000,-10,-5,30,1],['Run the console counter',5,3500,-20,-10,0,0]]},
+{n:'PS5 Lounge, Oye',t:'game',g:'Oye',x:20.5,y:43.5,e:'🕹️',p:'Tobi',b:'Where FUOYE students play after lectures.',f:['Burger & chips', 1800],a:[['Night of Call of Duty',3,-1200,-15,-5,30,1],['Organise a tournament',4,3000,-20,-10,10,2]]},
+{n:'Ikere Arcade',t:'game',g:'Ikere',x:9.5,y:-21.5,e:'👾',p:'Dayo',b:'Old-school arcade machines and snack stalls.',f:['Puff-puff', 300],a:[['Beat the arcade high score',2,-500,-8,-3,25,1],['Fix arcade machines',4,3000,-20,-5,0,1,1]]},
+{n:'Ado Night Lounge',t:'club',g:'Ado-Ekiti',x:-2,y:2,e:'🪩',p:'DJ Kaye',b:"Ado's late-night spot for music and dancing.",f:['Grilled fish', 2500],a:[['Dance all night',4,-3000,-30,-10,40,1],['DJ a set',4,6000,-30,-10,10,2]]},
+{n:'Ikere Beats Club',t:'club',g:'Ikere',x:11,y:-21,e:'🎧',p:'Barman Sola',b:'Afrobeats and amala after dark.',f:['Pepper soup', 1800],a:[['Dance',3,-2500,-25,-10,35,1],['Work as barman',5,4500,-25,-10,0,0]]}];
+const FL=[['all','All'],['town','Towns'],['sch','Schools'],['tour','Tourism'],['hotel','Hotels'],['club','Clubs'],['game','Gaming']],RES=[['bolaji_ado','Bolaji','Ado-Ekiti'],['tope_ikere','Tope','Ikere'],['ayo_ikogosi','Ayo','Ikogosi'],['seun_fuoye','Seun','FUOYE, Oye'],['kemi_eksu','Kemi','EKSU, Ado'],['dele_ijero','Dele','Ijero'],['sade_omuo','Sade','Omuo'],['femi_arcade','Femi','Ikere Arcade']],REP=['Omo Ekiti, how far?','Come to the gaming hub tonight.','Have you been to Ikogosi? Wonderful water.','I dey school, call me later.','Make we link up at Olosunta.','Did you see the new hotel in Ado?'];
+const EV=[['NEPA took light. Phone is dead and you are sweating.',0,0,-10,0],['Police checkpoint: ₦500 "for water".',-500,0,-5,0],['A neighbour shares owambe jollof with you.',0,30,10,0],['Harmattan dust has you coughing.',0,0,-6,-10],['You find ₦1,000 in an old trouser.',1000,0,6,0],['Sudden rain. You wait it out under a shed.',0,0,-3,-5]];
+const JOBS=['Hustler','Shop assistant','Teacher','Civil servant','Oga'],AV=['🧑🏾','👩🏾','👨🏾‍🌾','👩🏾‍🎓'],HOME=['Rented room','Self-contain','Flat'],UP=[40000,120000],RENT=[3000,8000,0],STY=['Casual','Smart','Party'],TK=['Work a shift','Eat a meal','Chat with a local'];
+const CAR=[['Hawker',2500,0],['Shop assistant',3200,1],['Farmer',3500,0],['Okada rider',3800,2],['Tailor',4200,3],['Teacher',5000,6],['Nurse',5800,8],['Civil servant',6500,10],['Engineer',9000,16],['Doctor',12000,22]];
+const ORG=[['Ajo Baby','Loan-funded cash and a hustle edge.',{c:15000,hs:3}],["Cocoa Farmer's Child",'Farm-fit and hardy.',{c:6000,en:100,hs:1}],["Civil Servant's Child",'Steady start with some schooling.',{c:10000,sk:3}],['Diaspora Cousin','Cash from abroad, big expectations.',{c:40000,mo:50}]];
+const SHOP=[['Generator',25000,'Beats NEPA outages'],['Better bed',12000,'Sleep gives +10 energy'],['TV',15000,'Sleep gives +5 mood']];
+const AC=[['Ekiti Explorer','Visit all 16 LGAs',()=>new Set(S.vis.map(i=>P[i].g)).size>=16],['Small Money','Hold ₦50,000',()=>S.c+S.bk>=5e4],['Scholar','Reach skill 12',()=>S.sk>=12],['Omoluabi','Reach 20 reputation',()=>S.rp>=20],['Landlord','Own a flat',()=>S.hm==2],['Good Neighbour','Get 3 friends to 3 hearts',()=>Object.values(S.fr).filter(v=>v>=3).length>=3],['Hustler Pro','Work 30 shifts',()=>S.sf>=30],['Ward Chairman','Win the ward election',()=>S.of],['Gem Hunter','Find 3 daily gems',()=>S.gm>=3],['Business Owner','Open a provision stall',()=>S.biz],['Campus Tour','Visit 5 schools',()=>S.vis.filter(i=>P[i].t=='sch').length>=5],['Tourist','Visit 3 tourism sites',()=>S.vis.filter(i=>P[i].t=='tour'||P[i].n.includes('Ikogosi')||P[i].n.includes('Arinta')).length>=3]];
+let S=null,pick=0,stp=0,NM='',SQ='',SR=[];const app=document.getElementById('app'),cl=v=>Math.max(0,Math.min(100,v)),$$=n=>'₦'+Math.round(n).toLocaleString();
+const jl=()=>[0,3,7,12,20].filter(v=>S.sk>=v).length-1,dist=(a,b)=>Math.hypot(P[a].x-P[b].x,P[a].y-P[b].y);
+const save=()=>{try{localStorage.setItem('ekitilife',JSON.stringify(S))}catch(e){}};
+try{const r=localStorage.getItem('ekitilife');if(r)S=Object.assign({hs:0,ch:0,cr:-1,sf:0,gm:0,gd:0,dt:{d:0,x:{}},ow:[],biz:0,of:0,rn:0,ph:'',un:'',cm:{},fl:'all'},JSON.parse(r))}catch(e){}
+function adv(h){S.h+=h;S.fu=cl(S.fu-h*2);while(S.h>=24){S.h-=24;S.d++;if(!S.sl)S.en=Math.min(S.en,35);S.sl=0;S.c+=(S.biz?1500+S.hs*50:0)+(S.of?2000:0);if(S.d%7==0){if(S.bk)S.bk=Math.round(S.bk*1.05);const r=RENT[S.hm];if(S.c>=r)S.c-=r;else{S.mo=cl(S.mo-15);S.rn=1}}}}
+function tk(i){if(S.dt.d!=S.d)S.dt={d:S.d,x:{}};if(!S.dt.x[i]){S.dt.x[i]=1;S.c+=1000;S.msg+=' ✅ Daily task: +₦1,000'}}
+const say=m=>{S.msg=m;render()};
+function chk(){if(S.rn){S.msg+=' Rent unpaid: your landlord is angry.';S.rn=0}if(S.en<=0){S.en=40;S.c=Math.max(0,S.c-2000);S.msg='You collapsed. Clinic bill: ₦2,000.'}AC.forEach(a=>{if(!S.ach.includes(a[0])&&a[2]()){S.ach.push(a[0]);S.msg='🏆 Achievement: '+a[0]}})}
+function act(a){const[l,h,c0,en,fu,mo,rp,sk]=a;let c=c0>2000?c0+jl()*1000:c0;if(S.c+c<0)return say('Not enough ₦ for that.');if(S.en+en<0)return say('Too tired. Eat or sleep first.');
+S.c+=c;S.en=cl(S.en+en);S.fu=cl(S.fu+fu);S.mo=cl(S.mo+mo);S.rp+=rp||0;S.sk+=sk||0;adv(h);S.msg=c>0?`${l}: +${$$(c)}`:l+' done.';if(Math.random()<.22){const e=EV[Math.floor(Math.random()*EV.length)];if(e===EV[0]&&S.ow.includes('Generator'))S.msg+=' Your generator beat NEPA.';else{S.c=Math.max(0,S.c+e[1]);S.fu=cl(S.fu+e[2]);S.mo=cl(S.mo+e[3]);S.en=cl(S.en+e[4]);S.msg+=' '+e[0]}}if(l.startsWith('Ate'))tk(1);if(l.startsWith('Worked'))tk(0);if(/owambe|dance/i.test(l))S.ch++;chk();save();render()}
+function go(i,m){const k=dist(S.loc,i);let c=0,h,en;if(m=='t'){if(k>12)return say('Too far to trek. Take a bus or okada.');h=Math.max(1,Math.round(k/5));en=-k*2}else if(m=='b'){c=-Math.max(200,k*35);h=Math.max(1,Math.round(k/35+.5));en=-5}else{c=-k*70;h=Math.max(1,Math.round(k/50));en=-3}
+if(S.c+c<0)return say('Not enough ₦ for this trip.');if(S.en+en<0)return say('Too tired to travel.');S.c+=c;S.en=cl(S.en+en);S.loc=i;if(!S.vis.includes(i))S.vis.push(i);adv(h);S.tab='here';S.msg=`Arrived in ${P[i].n} (${Math.round(k)} km).`;
+if(m=='o'&&Math.random()<.08){S.c=Math.max(0,S.c-1500);S.msg+=' Okada skid! Clinic: ₦1,500.'}chk();save();render()}
+function sleep(){const ht=P[S.loc].t=='hotel',c=S.loc==0?0:ht?8000:3000;if(S.c<c)return say('You need '+$$(c)+' to sleep here.');S.c-=c;S.en=cl(S.en+(ht?100:[60,80,100][S.hm])+(S.ow.includes('Better bed')?10:0));S.mo=cl(S.mo+S.hm*5+(S.ow.includes('TV')?5:0));S.fu=cl(S.fu-15);S.sl=1;if(S.h>=6)S.d++;S.h=6;chk();S.msg='Good sleep. A new day begins.';save();render()}
+const H={tab:v=>{S.tab=v;render()},act:v=>act(P[S.loc].a[v]),eat:()=>{const f=P[S.loc].f;act(['Ate '+f[0],1,-f[1],0,45,8,0])},sleep,go:v=>{const[i,m]=v.split(',');go(+i,m)},
+chat:()=>{const n=P[S.loc].p;if(S.cd[n]==S.d)return say('You already chatted with '+n+' today.');S.cd[n]=S.d;const f=S.fr[n]=Math.min(6,(S.fr[n]||0)+1);S.mo=cl(S.mo+8);S.rp++;adv(1);S.msg=`You and ${n} are closer.`;if(f==3||f==6){const g=f*1000;S.c+=g;S.msg+=` ${n} gives you ${$$(g)}.`}S.ch++;tk(2);chk();save();render()},
+dep:()=>{if(S.c<5000)return say('You need ₦5,000.');S.c-=5000;S.bk+=5000;save();render()},wd:()=>{S.c+=S.bk;S.bk=0;save();render()},
+up:()=>{const c=UP[S.hm];if(S.c<c)return say('You need '+$$(c));S.c-=c;S.hm++;S.msg='Moved up: '+HOME[S.hm];chk();save();render()},
+av:v=>{pick=+v;render()},fl:v=>{S.fl=v;render()},
+reg:()=>{const u=(document.getElementById('un').value||'').toLowerCase().replace(/[^a-z0-9_]/g,'');if(u.length<3)return say('Username needs 3+ letters, numbers or _.');if(RES.some(r=>r[0]==u))return say('That username is taken.');S.un=u;S.msg='Registered as @'+u;chk();save();render()},
+find:()=>{const q=SQ.toLowerCase().replace('@','').trim();SR=q?RES.filter(r=>r[0].includes(q)):[];render()},
+chatw:v=>{S.cw=v;S.ph='cw';render()},
+msg:()=>{const t=(document.getElementById('mi').value||'').trim();if(!t)return;const m=S.cm[S.cw]=S.cm[S.cw]||[];m.push(['me',t]);m.push([S.cw,REP[Math.floor(Math.random()*REP.length)]]);while(m.length>30)m.shift();S.mo=cl(S.mo+3);S.ch++;save();render()},sty:v=>{stp=+v;render()},ph:v=>{S.ph=v;render()},
+work:()=>{const c=CAR[S.cr];if(S.en<30)return say('Too tired to work.');const lv=S.sf<10?0:S.sf<30?1:2,pay=Math.round(c[1]*[1,1.5,2.2][lv]+S.hs*80);S.sf++;S.hs++;act(['Worked as '+c[0],5,pay,-30,-15,-3,0])},
+apply:v=>{const c=CAR[v];if(S.sk<c[2])return say('You need smarts '+c[2]+' to be a '+c[0]+'. Study at EKSU or FUOYE.');S.cr=+v;S.sf=0;say('You are now a '+c[0]+'. Work a shift from any town.')},
+gem:()=>{S.gd=S.d;S.gm++;S.c+=10000;S.msg='💎 You found the daily gem! +₦10,000';chk();save();render()},
+buy:v=>{const it=SHOP[v];if(S.c<it[1])return say('You need '+$$(it[1]));S.c-=it[1];S.ow.push(it[0]);S.msg='Bought: '+it[0];save();render()},
+stall:()=>{if(S.biz)return say('Your stall is already open.');if(S.c<30000)return say('You need ₦30,000.');S.c-=30000;S.biz=1;S.msg='Provision stall open. It earns daily income.';chk();save();render()},
+pitch:()=>{if(S.c<5000)return say('Pitch fee is ₦5,000.');S.c-=5000;adv(2);if(Math.random()<.15+(S.sk+S.ch)/100){S.c+=150000;S.msg='🚀 Investors loved it! +₦150,000'}else S.msg='Pitch rejected. Build smarts and charm, then try again.';chk();save();render()},
+dm:v=>{if(S.cd['dm'+v]==S.d)return say('You already messaged '+v+' today.');S.cd['dm'+v]=S.d;S.mo=cl(S.mo+4);S.ch++;say('You and '+v+' traded jokes.')},
+send:v=>{if(S.c<1000)return say('You need ₦1,000.');S.c-=1000;S.fr[v]=Math.min(6,(S.fr[v]||0)+1);S.rp++;S.msg='Sent ₦1,000 to '+v+'. They are touched.';chk();save();render()},
+vote:()=>{if(S.cd.vt&&S.d-S.cd.vt<14)return say('Next election in '+(14-(S.d-S.cd.vt))+' days.');S.cd.vt=S.d;S.rp+=2;S.msg='You voted: +2 reputation.';chk();save();render()},
+run:()=>{if(S.of)return say('You are already Ward Chairman.');if(S.rp<25)return say('You need 25 reputation to contest.');if(S.c<20000)return say('Campaign costs ₦20,000.');S.c-=20000;if(Math.random()<.3+S.ch/100+S.rp/200){S.of=1;S.rp+=10;S.msg='🗳️ You won Ward Chairman! +₦2,000 daily stipend.'}else S.msg='You lost the ward election. Try again.';chk();save();render()},reset:()=>{if(confirm('Delete this save and start over?')){S=null;save();try{localStorage.removeItem('ekitilife')}catch(e){}render()}}};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(b&&H[b.dataset.k])H[b.dataset.k](b.dataset.v)});
+function start(){const n=NM.trim()||'Omo Ekiti',o=ORG[Math.floor(Math.random()*ORG.length)];S={nm:n,av:AV[pick],d:1,h:6,c:5000,en:90,fu:70,mo:70,rp:0,sk:0,hs:0,ch:0,cr:-1,sf:0,gm:0,gd:0,dt:{d:0,x:{}},ow:[],biz:0,of:0,rn:0,ph:'',un:'',cm:{},fl:'all',loc:0,hm:0,bk:0,vis:[0],fr:{},cd:{},ach:[],sl:0,tab:'here'};Object.assign(S,o[2]);if(stp==1)S.sk+=2;if(stp==2)S.ch+=3;if(stp==0)S.mo=85;S.msg='Birth lottery: '+o[0]+'. '+o[1];save();render()}
+function PH(){const b=(k,v,t)=>`<button data-k="${k}" data-v="${v}">${t}</button>`;
+if(!S.ph)return `<div class="card"><h3>📱 Phone</h3>${b('ph','sal','💼 Salary Index')}${b('ph','chat','💬 Chats & money')}${b('ph','day','📅 Daily tasks & gem')}${b('ph','vote','🗳️ Ward election')}${b('ph','pl','🧑🏾‍🤝‍🧑🏾 Players & chat')}</div>`;
+let o=b('ph','','← Back');
+if(S.ph=='sal')o+=CAR.map((c,i)=>b('apply',i,`${c[0]} · ${$$(c[1])}/shift · smarts ${c[2]} ${S.cr==i?'✓':''}`)).join('')+'<p class="sm">Pay rises after 10 and 30 shifts.</p>';
+else if(S.ph=='chat')o+=Object.keys(S.fr).map(n=>`<div class="card"><b>${n}</b> ${'❤️'.repeat(S.fr[n])}<div class="g2">${b('dm',n,'Message')}${b('send',n,'Send ₦1,000')}</div></div>`).join('')||'<p class="sm">Chat with locals first to unlock their numbers.</p>';
+else if(S.ph=='day'){const x=S.dt.d==S.d?S.dt.x:{},g=P[(S.d*7)%P.length];o+=`<div class="card"><h3>Today's tasks (+₦1,000 each)</h3>${TK.map((t,i)=>`<p>${x[i]?'✅':'⬜'} ${t}</p>`).join('')}</div><div class="card"><h3>💎 Daily gem clue</h3><p>${S.gd==S.d?'Found today.':'Look in '+g.g+' LGA. '+g.b}</p></div>`}
+else if(S.ph=='pl'){o+='<p class="sm">Residents here are simulated characters. Live chat with real players needs online accounts, which this page cannot host.</p>';
+o+=S.un?`<p>You are <b>@${S.un}</b></p>`:`<div class="card"><input id="un" placeholder="Pick a username" maxlength="15" aria-label="Username">${b('reg','','Register username')}</div>`;
+o+=`<div class="card"><input id="sq" value="${SQ}" oninput="SQ=this.value" placeholder="Find a player by username" aria-label="Search username">${b('find','','Search')}</div>`;
+if(S.un&&SR.length)o+=SR.map(r=>`<div class="card"><b>@${r[0]}</b> · ${r[1]} · ${r[2]}${b('chatw',r[0],'💬 Chat')}</div>`).join('');else if(S.un&&SQ)o+='<p class="sm">No player with that username.</p>'}
+else if(S.ph=='cw'){const m=S.cm[S.cw]||[];o=b('ph','pl','← Players')+`<h3>@${S.cw}</h3>`+m.map(x=>`<p><b>${x[0]=='me'?'You':'@'+x[0]}:</b> ${x[1].replace(/</g,'&lt;')}</p>`).join('')+`<input id="mi" maxlength="120" placeholder="Type a message" aria-label="Message">`+b('msg','','Send')}
+else o+='<p>Vote every 14 days. Contest for Ward Chairman with 25+ reputation and ₦20,000.</p>'+b('vote','','Vote')+b('run','','Contest for Ward Chairman · ₦20,000');
+return o}
+const bar=(l,v)=>`<span>${l}</span><div class="bar"><i style="width:${v}%"></i></div>`;
+function render(){if(!S){app.innerHTML=`<div class="card"><div class="big">⛰️</div><h1>Ekiti Life</h1><p class="sm">Live your Ekiti story. Hustle in Ado, dip in Ikogosi, climb Olosunta and visit all 16 LGAs.</p><input id="nm" value="${NM}" oninput="NM=this.value" placeholder="Your name" maxlength="16" aria-label="Your name"><div class="g2" style="margin:10px 0">${AV.map((a,i)=>`<button class="av ${i==pick?'on':''}" data-k="av" data-v="${i}" aria-label="Avatar ${i+1}">${a}</button>`).join('')}</div><p class="sm">Pick your style. Your birth lottery is a surprise.</p><div class="g2" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:10px">${STY.map((a,i)=>`<button class="${i==stp?'p':''}" data-k="sty" data-v="${i}">${a}</button>`).join('')}</div><button class="p" onclick="start()">Start playing</button></div>`;return}
+const gi=(S.d*7)%P.length,p=P[S.loc],hr=Math.floor(S.h),t=`${hr%12||12}:00 ${hr<12?'AM':'PM'}`,lg=new Set(S.vis.map(i=>P[i].g)).size;let body='';
+if(S.tab=='here'){body=`<div class="card"><div class="row"><h2>${p.e} ${p.n}</h2><span class="sm">${p.g}</span></div><p class="sm">${p.b}</p>${p.a.map((a,i)=>`<button data-k="act" data-v="${i}">${a[0]} <span class="sm">· ${a[1]}h ${a[2]?(a[2]>0?'+':'−')+$$(Math.abs(a[2])):''}</span></button>`).join('')}
+<button data-k="eat">Eat ${p.f[0]} <span class="sm">· ${$$(p.f[1])}</span></button><button data-k="chat">Chat with ${p.p} ${'❤️'.repeat(S.fr[p.p]||0)}</button>${S.cr>=0?`<button data-k="work">Work as ${CAR[S.cr][0]} <span class="sm">· 5h · from ${$$(CAR[S.cr][1])}</span></button>`:''}${S.loc==gi&&S.gd!=S.d?`<button data-k="gem">💎 Search for the daily gem</button>`:''}<button data-k="sleep">Sleep <span class="sm">· ${S.loc==0?HOME[S.hm]+', free':P[S.loc].t=='hotel'?'hotel ₦8,000':'guesthouse ₦3,000'}</span></button></div>`;
+if(S.loc==0)body+=`<div class="card"><h3>Ajo savings & home</h3><p class="sm">Saved: ${$$(S.bk)} (+5% each week) · Home: ${HOME[S.hm]}</p><div class="g2"><button data-k="dep">Save ₦5,000</button><button data-k="wd">Withdraw all</button></div>${S.hm<2?`<button data-k="up">Upgrade home · ${$$(UP[S.hm])}</button>`:''}<p class="sm">Rent ${$$(RENT[S.hm])} every week</p></div><div class="card"><h3>Business & shop</h3><button data-k="stall">${S.biz?'Provision stall open ✓':'Open provision stall · ₦30,000'}</button><button data-k="pitch">Pitch at Ekiti Innovation Hub · ₦5,000</button>${SHOP.map((x,i)=>`<button data-k="buy" data-v="${i}" ${S.ow.includes(x[0])?'disabled':''}>${x[0]} · ${$$(x[1])} <span class="sm">${x[2]}</span></button>`).join('')}</div>`}
+else if(S.tab=='map'){body=`<p class="sm">LGAs visited: ${lg}/16 · distances are rough</p><div class="g2" style="grid-template-columns:repeat(4,1fr);margin-bottom:8px">${FL.map(f=>`<button style="text-align:center;padding:8px 4px;font-size:13px" class="${(S.fl||'all')==f[0]?'p':''}" data-k="fl" data-v="${f[0]}">${f[1]}</button>`).join('')}</div>`+P.map((q,i)=>i==S.loc?'':{i,k:dist(S.loc,i)}).filter(Boolean).filter(o=>(S.fl||'all')=='all'||(P[o.i].t||'town')==S.fl).sort((a,b)=>a.k-b.k).map(({i,k})=>`<div class="card"><div class="row"><b>${P[i].e} ${P[i].n} ${S.vis.includes(i)?'✓':''}</b><span class="sm">${Math.round(k)} km</span></div><div class="sm">${P[i].g}</div><div class="g2" style="grid-template-columns:1fr 1fr 1fr;margin-top:6px"><button data-k="go" data-v="${i},t">Trek</button><button data-k="go" data-v="${i},b">Bus ${$$(Math.max(200,k*35))}</button><button data-k="go" data-v="${i},o">Okada ${$$(k*70)}</button></div></div>`).join('')}
+else if(S.tab=='ph'){body=PH()}
+else{body=`<div class="card"><div class="big">${S.av}</div><h2>${S.nm}</h2><p class="sm">${S.cr>=0?CAR[S.cr][0]+' (shift '+S.sf+')':'No career yet'} · smarts ${S.sk} · hustle ${S.hs} · charm ${S.ch} · gems ${S.gm} · reputation ${S.rp} · ${HOME[S.hm]}</p></div><div class="card"><h3>Achievements</h3>${AC.map(a=>`<p>${S.ach.includes(a[0])?'🏆':'🔒'} <b>${a[0]}</b> <span class="sm">${a[1]}</span></p>`).join('')}</div><div class="card"><h3>Friends</h3>${Object.keys(S.fr).map(n=>`<p>${n} ${'❤️'.repeat(S.fr[n])}</p>`).join('')||'<p class="sm">Chat with locals to make friends.</p>'}</div><button data-k="reset">Start over</button>`}
+app.innerHTML=`<div class="top"><div class="row"><b>${S.av} ${S.nm}</b><span>Day ${S.d} · ${t}</span><b>${$$(S.c)}</b></div><div class="bars">${bar('Energy',S.en)}${bar('Food',S.fu)}${bar('Mood',S.mo)}</div></div>${S.msg?`<div class="msg" role="status">${S.msg}</div>`:''}<div class="tabs">${['here','map','ph','me'].map(k=>`<button class="${S.tab==k?'on':''}" data-k="tab" data-v="${k}">${{here:'Here',map:'Travel',ph:'Phone',me:'Me'}[k]}</button>`).join('')}</div>${body}`}
+render();
+</script></body></html>
